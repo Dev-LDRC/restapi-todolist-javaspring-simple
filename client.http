@@ -1,0 +1,47 @@
+@baseUrl = http://localhost:8080
+@name = User Test
+@userName = UserTest
+@password = hash123
+
+POST {{baseUrl}}/users/
+content-type: application/json
+
+{
+   "name": "{{name}}",
+   "userName": "{{userName}}",
+   "password": "{{password}}"
+}
+
+###
+
+GET {{baseUrl}}/tasks/
+content-type: application/json
+Authorization: Basic {{userName}} {{password}}
+
+###
+
+POST {{baseUrl}}/tasks/
+content-type: application/json
+Authorization: Basic {{userName}} {{password}}
+
+{
+   "title": "Tarefa do {{userName}}",
+   "description": "In VsCode",
+   "startAt": "2026-11-14T10:00:00",
+   "endAt": "2026-11-14T11:30:00",
+   "priority": "High"
+}
+
+###
+
+PUT {{baseUrl}}/tasks/81961e21-ed99-4cab-9b3b-3cb24c56db30
+content-type: application/json
+Authorization: Basic {{userName}} {{password}}
+
+{
+   "title": "study Docker lorem ipsum lorem ipsum",
+   "description": "In VsCode",
+   "startAt": "2026-11-14T10:00:00",
+   "endAt": "2026-11-14T11:30:00",
+   "priority": "Medium"
+}
