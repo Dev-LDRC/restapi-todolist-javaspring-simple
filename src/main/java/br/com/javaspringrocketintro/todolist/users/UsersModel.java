@@ -1,33 +1,33 @@
 package br.com.javaspringrocketintro.todolist.users;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
-@Entity(name = "table_users")
-public class UsersModel {
+@RedisHash("users")
+public class UsersModel implements Serializable {
 
    @Id
-   @GeneratedValue(generator = "UUID")
-   private UUID id;
-   @Column(unique = true)
+   private String id;
+
+   @Indexed
    private String userName;
    private String name;
    private String password;
 
-   @UpdateTimestamp
    private LocalDateTime updatedAt;
-
-   @CreationTimestamp
    private LocalDateTime createdAt;
 
+   public UsersModel() {
+      this.id = UUID.randomUUID().toString();
+      this.createdAt = LocalDateTime.now();
+      this.updatedAt = LocalDateTime.now();
+   }
 }

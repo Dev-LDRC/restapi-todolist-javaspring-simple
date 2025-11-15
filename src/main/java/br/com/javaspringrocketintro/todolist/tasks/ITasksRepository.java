@@ -1,12 +1,9 @@
 package br.com.javaspringrocketintro.todolist.tasks;
 
-import java.util.UUID;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
+public interface ITasksRepository extends CrudRepository<TasksModel, String> {
 
-public interface ITasksRepository extends JpaRepository<TasksModel, UUID> {
-
-   List<TasksModel> findByUserId(UUID userId);   
+   List<TasksModel> findByUserId(String userId);   
 }

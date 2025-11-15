@@ -1,10 +1,8 @@
 package br.com.javaspringrocketintro.todolist.users;
 
-import java.util.UUID;
+import org.springframework.data.repository.CrudRepository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface IUsersRepository extends JpaRepository<UsersModel, UUID> {
+public interface IUsersRepository extends CrudRepository<UsersModel, String> {
 
    UsersModel findByUserName(String userName);
 

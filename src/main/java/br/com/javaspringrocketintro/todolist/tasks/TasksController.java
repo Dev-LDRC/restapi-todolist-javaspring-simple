@@ -38,7 +38,7 @@ public class TasksController {
 
       var userId = request.getAttribute("userId");
 
-      tasksModel.setUserId((UUID) userId);
+      tasksModel.setUserId(userId.toString());
 
       var taskCreated = tasksRepository.save(tasksModel);
       return ResponseEntity.status(200).body(taskCreated);
@@ -50,14 +50,14 @@ public class TasksController {
 
       var userId = request.getAttribute("userId");
 
-      var userTasks = tasksRepository.findByUserId((UUID) userId);
+      var userTasks = tasksRepository.findByUserId(userId.toString());
 
       return ResponseEntity.status(200).body(userTasks);
 
    }
 
    @PutMapping("/{taskId}")
-   public ResponseEntity<Object> update(@RequestBody TasksModel tasksModel, HttpServletRequest request, @PathVariable UUID taskId) {
+   public ResponseEntity<Object> update(@RequestBody TasksModel tasksModel, HttpServletRequest request, @PathVariable String taskId) {
 
       var taskToUpdate = this.tasksRepository.findById(taskId).orElse(null);
       
@@ -65,17 +65,9 @@ public class TasksController {
          return ResponseEntity.status(400).body("Esta tarefa não existe.");
       }
 
-      // System.out.println("---------------");
-      // System.out.println(taskToUpdate);
-      // System.out.println("---------------");
-
       var userId = request.getAttribute("userId");
 
-      // System.out.println("---------------");
-      // System.out.println(userId);
-      // System.out.println("---------------");
-
-      if (!taskToUpdate.getUserId().equals(userId)) {
+      if (!taskToUpdate.getUserId().equals(userId.toString())) {
          return ResponseEntity.status(400).body("Não autorizado para alterar esta tarefa.");
       }
 
@@ -88,6 +80,8 @@ public class TasksController {
       }
 
       Utils.copyNonNullProperties(tasksModel, taskToUpdate);
+      
+      taskToUpdate.setUpdatedAt(LocalDateTime.now());
 
       var taskUpdated = tasksRepository.save(taskToUpdate);
 

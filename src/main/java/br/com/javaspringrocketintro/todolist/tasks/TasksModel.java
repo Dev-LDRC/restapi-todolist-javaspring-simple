@@ -1,40 +1,38 @@
 package br.com.javaspringrocketintro.todolist.tasks;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
-@Entity(name = "table_tasks")
-public class TasksModel {
+@RedisHash("tasks")
+public class TasksModel implements Serializable {
 
    @Id
-   @GeneratedValue(generator = "UUID")
-   private UUID id;
+   private String id;
    
-   private UUID userId;
+   @org.springframework.data.redis.core.index.Indexed
+   private String userId;
    
-   @Column(length = 50)
    private String title;
    private String description;
    private LocalDateTime startAt;
    private LocalDateTime endAt;
    private String priority;
    
-
-   @UpdateTimestamp
    private LocalDateTime updatedAt;
-
-   @CreationTimestamp
    private LocalDateTime createdAt;
+
+   public TasksModel() {
+      this.id = UUID.randomUUID().toString();
+      this.createdAt = LocalDateTime.now();
+      this.updatedAt = LocalDateTime.now();
+   }
 
    public void setTitle(String title) throws Exception {
       if (title.length() > 50) {
@@ -42,5 +40,4 @@ public class TasksModel {
       }
       this.title = title;
    }
-
 }
