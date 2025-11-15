@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.javaspringrocketintro.todolist.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 
-// import at.favre.lib.crypto.bcrypt.BCrypt;
-
 @RestController
 @RequestMapping("/tasks")
 public class TasksController {
